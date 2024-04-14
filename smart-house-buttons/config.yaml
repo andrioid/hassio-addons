@@ -1,5 +1,5 @@
 name: "Smart-House buttons"
-version: "0.1.6"
+version: "0.1.7"
 slug: folder
 init: false
 description: >-
@@ -16,3 +16,7 @@ schema:
   modbus_host: str
 options:
   modbus_host: ""
+services:
+  - mqtt
+discovery:
+  - mqtt
