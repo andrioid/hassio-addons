@@ -16,8 +16,8 @@ ADD package.json /app/
 
 RUN bun install
 COPY --chown=app . .
-
-CMD [ "./run.sh"]
+RUN chmod 755 ./run.sh
+CMD ["./run.sh"]
 
 LABEL \
   io.hass.version="VERSION" \
