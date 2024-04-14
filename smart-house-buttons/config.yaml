@@ -7,9 +7,13 @@ arch:
   - amd64
   - aarch64
   - armhf
-url: "website with more information about the add-on (e.g., a forum thread for support)"
+url: "https://github.com/andrioid/hassio-addons"
 ports:
   123/tcp: 123
 map:
   - config:rw
   - ssl
+schema:
+  modbus_host: str
+options:
+  modbus_host: ""

@@ -10,5 +10,6 @@ bashio::log.info "Reverse tunnel configured for $username@$host"
 MQTT_HOST=$(bashio::services mqtt "host")
 MQTT_USER=$(bashio::services mqtt "username")
 MQTT_PASSWORD=$(bashio::services mqtt "password")
+SH_HOST=$(bashio::config 'modbus_host')
 
 bun index.ts
