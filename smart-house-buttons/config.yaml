@@ -17,6 +17,4 @@ schema:
 options:
   modbus_host: ""
 services:
-  - mqtt
-discovery:
-  - mqtt
+  - mqtt:need
