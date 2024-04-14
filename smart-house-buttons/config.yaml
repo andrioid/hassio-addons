@@ -1,5 +1,5 @@
 name: "Smart-House buttons"
-version: "0.1.0"
+version: "0.1.1"
 slug: folder
 description: >-
   "A rather hacky way of getting my old Carlo Gavazzi smart-house buttons to trigger Home Assistant."
