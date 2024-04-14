@@ -81,6 +81,7 @@ export function assertEnv() {
   const { MQTT_HOST, MQTT_PASSWORD, MQTT_USER, SH_HOST } = env;
   if (!MQTT_HOST || !MQTT_PASSWORD || !MQTT_USER || !SH_HOST) {
     console.log("MQTT_HOST, MQTT_PASSWORD, MQTT_USER and SH_HOST must be set");
+    console.log(process.env);
     process.exit(1);
   }
 }
