@@ -8,8 +8,6 @@ arch:
   - aarch64
   - armhf
 url: "https://github.com/andrioid/hassio-addons"
-ports:
-  123/tcp: 123
 map:
   - config:rw
   - ssl

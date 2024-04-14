@@ -1,5 +1,5 @@
 build_from:
-  amd64: amd64-base-ubuntu
-  armhf: armv7-base-ubuntu
-  aarch64: aarch64-base-ubuntu
+  amd64: ghcr.io/hassio-addons/ubuntu-base:9.0.5
+  armhf: ghcr.io/hassio-addons/ubuntu-base:9.0.5
+  aarch64: ghcr.io/hassio-addons/ubuntu-base:9.0.5
 squash: false
