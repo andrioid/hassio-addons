@@ -1,0 +1,15 @@
+name: "Smart-House buttons"
+version: "0.1.0"
+slug: folder
+description: >-
+  "A rather hacky way of getting my old Carlo Gavazzi smart-house buttons to trigger Home Assistant."
+arch:
+  - amd64
+  - aarch64
+  - armhf
+url: "website with more information about the add-on (e.g., a forum thread for support)"
+ports:
+  123/tcp: 123
+map:
+  - config:rw
+  - ssl
