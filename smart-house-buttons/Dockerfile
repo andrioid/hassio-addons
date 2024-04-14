@@ -9,7 +9,7 @@ RUN curl -fsSL https://bun.sh/install | bash && cp /root/.bun/bin/* /usr/local/b
 
 RUN mkdir /app && useradd -m app && chown app /app
 WORKDIR /app
-USER app
+#USER app
 
 
 ADD package.json /app/
