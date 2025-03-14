@@ -58,23 +58,18 @@ export class SmarthouseService {
     this.table = table;
   }
 
-  /** Measure how long a button has been pressed. Trigger a callback after release */
   private handleButtonChange(key: string, isButtonPressed: boolean) {
-    const self = this;
-    const button = (() => {
-      const button = self.buttonState.get(key);
-      if (button) {
-        return button;
-      }
-      const newButton = {
+    let button = this.buttonState.get(key);
+    if (!button) {
+      // If the button is not in the state, we need to create it
+      button = {
         pressed: null,
         released: null,
         pressedMs: null,
         direction: null,
       };
-      this.buttonState.set(key, newButton);
-      return newButton;
-    })();
+      this.buttonState.set(key, button);
+    }
 
     if (isButtonPressed) {
       // Button pressed
@@ -96,5 +91,6 @@ export class SmarthouseService {
         }
       }
     }
+    this.buttonState.set(key, button);
   }
 }
