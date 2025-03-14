@@ -54,7 +54,7 @@ export class SmarthouseService {
   private async pollButtons() {
     const inputs = await this.client.readHoldingRegisters(16, 8);
     const table = mapDigitalRegistersToKeys(inputs.data);
-    compareTables(this.table, table, this.handleButtonChange);
+    compareTables(this.table, table, this.handleButtonChange.bind(this));
     this.table = table;
   }
 
