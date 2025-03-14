@@ -34,7 +34,7 @@ async function run() {
     mq.publish(topic, JSON.stringify(payload));
   }
 
-  sh.subscribe((key, value) => {
+  sh.onButtonPress((key) => {
     const id = `${NODE_ID}/${key}`;
     const topic = `${TRIGGER_TOPIC_PREFIX}/${id}/action`;
     mq.publish(topic, "button_click");

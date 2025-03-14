@@ -1,21 +1,25 @@
 import ModbusRTU from "modbus-serial";
 import { createInitialTable, type SmartHouseTable } from "./table";
 
-import { NODE_ID, TRIGGER_TOPIC_PREFIX } from "./constants";
-import {
-  compareTables,
-  debounce,
-  mapDigitalRegistersToKeys,
-} from "./functions";
+import { compareTables, mapDigitalRegistersToKeys } from "./functions";
 
 const POLL_TIME = 250;
 const SH_HOST = process.env.SH_HOST as string; // This is validated elsewhere
 
-type ListenerFn = (key: string, newValue: boolean) => void;
+type ListenerFn = (key: string, ms: number) => void;
 
 export class SmarthouseService {
   table: SmartHouseTable = createInitialTable();
   client = new ModbusRTU();
+  buttonState: Map<
+    string,
+    {
+      pressed: Date | null;
+      released: Date | null;
+      pressedMs: number | null;
+      direction: "up" | "down" | null;
+    }
+  > = new Map();
   listeners: Array<ListenerFn> = [];
 
   constructor() {}
@@ -31,30 +35,62 @@ export class SmarthouseService {
     });
 
     setInterval(async () => {
-      await this.pollButton((key, val) => {
-        this.listeners.forEach(async (listener) => {
-          listener(key, val);
-        });
-      });
+      await this.pollButtons();
       //await pollLight();
     }, POLL_TIME);
   }
 
-  subscribe(listenerFn: ListenerFn) {
-    // We're only interested in one event per button click
-    const lfn = debounce(listenerFn);
-    this.listeners.push(lfn);
+  // When the value is true, we need to store pending presses
+  // When the value is false, we measure how long it was pressed and create an event
+
+  // Subscription callback by the parent
+  onButtonPress(fn: ListenerFn) {
+    this.listeners.push(fn);
   }
-  unsubscribe() {}
 
-  async pollButton(onChange?: ListenerFn) {
-    //const buttonPresses = await client.readDiscreteInputs(1586, 1);
+  private async pollButtons() {
     const inputs = await this.client.readHoldingRegisters(16, 8);
-    //console.log("inputs", inputs.data);
     const table = mapDigitalRegistersToKeys(inputs.data);
-    compareTables(this.table, table, onChange);
+    compareTables(this.table, table, this.handleButtonChange);
     this.table = table;
+  }
 
-    //console.table(table);
+  /** Measure how long a button has been pressed. Trigger a callback after release */
+  private handleButtonChange(key: string, isButtonPressed: boolean) {
+    const button = (() => {
+      const button = this.buttonState.get(key);
+      if (button) {
+        return button;
+      }
+      const newButton = {
+        pressed: null,
+        released: null,
+        pressedMs: null,
+        direction: null,
+      };
+      this.buttonState.set(key, newButton);
+      return newButton;
+    })();
+
+    if (isButtonPressed) {
+      // Button pressed
+      button.pressed = new Date();
+      button.direction = button.direction === "up" ? "down" : "up";
+      button.pressedMs = 0;
+      button.released = null;
+    } else {
+      // Button released
+      button.released = new Date();
+      button.pressedMs =
+        button.released.getTime() - (button.pressed?.getTime() ?? 0);
+      button.pressed = null;
+      button.direction = null;
+      if (button.pressedMs > 0) {
+        console.log("Button released", key, button.pressedMs);
+        for (const listener of this.listeners) {
+          listener(key, button.pressedMs);
+        }
+      }
+    }
   }
 }
