@@ -19,10 +19,13 @@ export class SmarthouseService {
       pressedMs: number | null;
       direction: "up" | "down" | null;
     }
-  > = new Map();
-  listeners: Array<ListenerFn> = [];
+  >;
+  listeners: Array<ListenerFn>;
 
-  constructor() {}
+  constructor() {
+    this.buttonState = new Map();
+    this.listeners = [];
+  }
 
   async connect() {
     const client = this.client;
