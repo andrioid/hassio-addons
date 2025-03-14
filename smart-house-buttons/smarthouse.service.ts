@@ -60,8 +60,9 @@ export class SmarthouseService {
 
   /** Measure how long a button has been pressed. Trigger a callback after release */
   private handleButtonChange(key: string, isButtonPressed: boolean) {
+    const self = this;
     const button = (() => {
-      const button = this.buttonState.get(key);
+      const button = self.buttonState.get(key);
       if (button) {
         return button;
       }

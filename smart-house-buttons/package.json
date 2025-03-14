@@ -2,6 +2,9 @@
   "name": "modbus-js",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "verify": "tsc --noEmit --skipLibCheck"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
