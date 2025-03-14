@@ -85,7 +85,11 @@ export class SmarthouseService {
       button.pressed = null;
       button.direction = null;
       if (button.pressedMs > 0) {
-        console.log("Button released", key, button.pressedMs);
+        console.log(
+          `[${key}] Pressed for ${button.pressedMs}ms`,
+          key,
+          button.pressedMs
+        );
         for (const listener of this.listeners) {
           listener(key, button.pressedMs);
         }

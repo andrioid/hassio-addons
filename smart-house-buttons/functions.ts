@@ -43,8 +43,6 @@ export function compareTables(
     if (oldTable[key] !== newTable[key]) {
       const newValue = newTable[key];
       if (newValue === undefined) return;
-      console.log("Change", key, oldTable[key], newValue);
-
       onChange?.(key, newValue);
     }
   });
